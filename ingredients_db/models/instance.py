@@ -19,6 +19,7 @@ class InstanceState(enum.Enum):
     STOPPED = 'STOPPED'
     DELETING = 'DELETING'
     DELETED = 'DELETED'
+    IMAGING = 'IMAGING'
     ERROR = 'ERROR'
 
 

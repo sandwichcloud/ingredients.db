@@ -14,6 +14,10 @@ class ProjectState(enum.Enum):
     ERROR = 'ERROR'
 
 
+# TODO: project members (users)
+# only project members can do things within the project
+
+
 @generic_repr
 class Project(Base):
     __tablename__ = 'projects'

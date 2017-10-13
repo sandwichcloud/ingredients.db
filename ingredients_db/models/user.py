@@ -5,6 +5,10 @@ from sqlalchemy_utils import UUIDType, ArrowType, generic_repr
 from ingredients_db.database import Base
 
 
+# TODO: user roles
+# i.e only admins can crud networks and crud projects
+
+
 @generic_repr
 class User(Base):
     __tablename__ = 'users'
