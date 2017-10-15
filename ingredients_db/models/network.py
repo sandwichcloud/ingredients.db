@@ -50,7 +50,7 @@ class Network(TaskableEntity):
                 ip_addresses.append(host)
 
         network_ports = session.query(NetworkPort).filter(NetworkPort.network_id == self.id).filter(
-            NetworkPort.ip_address != None).with_for_update()  # noqa: ignore=E711
+            NetworkPort.ip_address != None)  # noqa: ignore=E711
 
         for network_port in network_ports:
             ip_address = ipaddress.IPv4Address(network_port.ip_address)
