@@ -27,7 +27,7 @@ class AuthNToken(Base):
     id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
     access_token = Column(String, nullable=False, index=True)
 
-    user_id = Column(UUIDType, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user_id = Column(UUIDType, ForeignKey('authn_users.id', ondelete='CASCADE'), nullable=False)
     project_id = Column(UUIDType, ForeignKey('projects.id', ondelete='CASCADE'))
 
     created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False, index=True)

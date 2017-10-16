@@ -35,7 +35,7 @@ def upgrade():
         sa.Column('id', sau.UUIDType, server_default=sa.text("uuid_generate_v4()"), primary_key=True),
         sa.Column('access_token', sa.String, nullable=False, index=True),
 
-        sa.Column('user_id', sau.UUIDType, sa.ForeignKey('users.id', ondelete='CASCADE'), nullable=False),
+        sa.Column('user_id', sau.UUIDType, sa.ForeignKey('authn_users.id', ondelete='CASCADE'), nullable=False),
         sa.Column('project_id', sau.UUIDType, sa.ForeignKey('projects.id', ondelete='CASCADE')),
 
         sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False, index=True),
