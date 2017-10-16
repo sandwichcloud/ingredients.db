@@ -46,5 +46,5 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('authn_token')
+    op.drop_table('authn_tokens')
     op.drop_table('projects')

@@ -9,7 +9,7 @@ class AuthNUser(Base):
     __tablename__ = 'authn_users'
 
     __table_args__ = (
-        UniqueConstraint('username', 'driver', name='uq_username_driver')
+        UniqueConstraint('username', 'driver', name='uq_username_driver'),
     )
 
     id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
