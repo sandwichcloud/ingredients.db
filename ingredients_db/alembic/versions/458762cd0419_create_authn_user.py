@@ -31,4 +31,4 @@ def upgrade():
 
 def downgrade():
     op.drop_constraint('uq_username_driver', 'authn_users', 'unique')
-    op.drop_table('users')
+    op.drop_table('authn_users')
