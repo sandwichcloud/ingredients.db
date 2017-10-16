@@ -76,7 +76,7 @@ class TestMigrations(object):
         from ingredients_db.models.project import Project
         from ingredients_db.models.public_key import PublicKey
         from ingredients_db.models.task import Task, TaskableEntity
-        from ingredients_db.models.user import User, UserToken
+        from ingredients_db.models.authn import AuthNUser, AuthNToken
 
         # Make sure the imports don't go away
         Image.mro()
@@ -90,8 +90,8 @@ class TestMigrations(object):
         PublicKey.mro()
         Task.mro()
         TaskableEntity.mro()
-        User.mro()
-        UserToken.mro()
+        AuthNUser.mro()
+        AuthNToken.mro()
 
         setup_extensions(uri_right)
         prepare_schema_from_models(uri_right, Base)

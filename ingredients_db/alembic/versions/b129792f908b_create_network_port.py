@@ -32,7 +32,7 @@ def upgrade():
     op.create_table(
         'networkable_entities',
         sa.Column('id', sau.UUIDType, sa.ForeignKey('taskable_entities.id'), primary_key=True),
-        sa.Column('network_port_id', sau.UUIDType, sa.ForeignKey('network_ports.id', ondelete='SET NULL')),
+        sa.Column('network_port_id', sau.UUIDType, sa.ForeignKey('network_ports.id', ondelete='RESTRICT')),
     )
 
 

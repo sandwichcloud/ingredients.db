@@ -23,7 +23,7 @@ class NetworkableEntity(TaskableEntity):
     __tablename__ = 'networkable_entities'
 
     id = Column(UUIDType, ForeignKey('taskable_entities.id'), primary_key=True)
-    network_port_id = Column(UUIDType, ForeignKey('network_ports.id', ondelete='SET NULL'))
+    network_port_id = Column(UUIDType, ForeignKey('network_ports.id', ondelete='RESTRICT'))
 
     __mapper_args__ = {
         'polymorphic_identity': 'networkable_entity'

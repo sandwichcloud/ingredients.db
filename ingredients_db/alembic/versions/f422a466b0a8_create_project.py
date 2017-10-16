@@ -31,7 +31,7 @@ def upgrade():
     )
 
     op.create_table(
-        'user_tokens',
+        'authn_tokens',
         sa.Column('id', sau.UUIDType, server_default=sa.text("uuid_generate_v4()"), primary_key=True),
         sa.Column('access_token', sa.String, nullable=False, index=True),
 
@@ -46,5 +46,5 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('user_tokens')
+    op.drop_table('authn_token')
     op.drop_table('projects')

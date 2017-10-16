@@ -1,4 +1,4 @@
-"""create user
+"""create authn user
 
 Revision ID: 458762cd0419
 Revises: 3ce1572cbc6b
@@ -18,14 +18,17 @@ depends_on = None
 
 def upgrade():
     op.create_table(
-        'users',
+        'authn_users',
         sa.Column('id', sau.UUIDType, server_default=sa.text("uuid_generate_v4()"), primary_key=True),
-        sa.Column('username', sa.String, unique=True, nullable=False),
+        sa.Column('username', sa.String, nullable=False),
+        sa.Column('driver', sa.String, nullable=False),
         sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False),
         sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
                   nullable=False)
     )
+    op.create_unique_constraint('uq_username_driver', 'authn_users', ['username', 'driver'])
 
 
 def downgrade():
+    op.drop_constraint('uq_username_driver', 'authn_users', 'unique')
     op.drop_table('users')
