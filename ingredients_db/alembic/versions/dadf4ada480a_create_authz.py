@@ -70,6 +70,7 @@ def upgrade():
         sa.Column('token_id', sau.UUIDType, sa.ForeignKey('authn_tokens.id', ondelete='CASCADE'), nullable=False),
         sa.Column('role_id', sau.UUIDType, sa.ForeignKey('authz_roles.id', ondelete='CASCADE'), nullable=False),
 
+        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False, index=True),
         sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
                   nullable=False),
     )

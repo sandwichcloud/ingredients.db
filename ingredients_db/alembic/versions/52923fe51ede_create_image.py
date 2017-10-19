@@ -33,7 +33,7 @@ def upgrade():
 
         sa.Column('project_id', sau.UUIDType, sa.ForeignKey('projects.id', ondelete='RESTRICT'), nullable=False),
         sa.Column('current_task_id', sau.UUIDType, sa.ForeignKey('tasks.id')),
-        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False, index=True),
         sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
                   nullable=False),
     )
