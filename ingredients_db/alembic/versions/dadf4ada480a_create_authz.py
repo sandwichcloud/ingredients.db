@@ -119,6 +119,7 @@ def upgrade():
 
 
 def downgrade():
+    op.drop_table('authn_token_roles')
     op.drop_table('authn_tokens')
     op.drop_table('authz_roles')
     # op.drop_table('authz_rules')
