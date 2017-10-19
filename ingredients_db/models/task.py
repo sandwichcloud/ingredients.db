@@ -1,6 +1,7 @@
 import enum
 
 from sqlalchemy import text, Column, String, Enum, Text, func, ForeignKey
+from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy_utils import UUIDType, ArrowType, generic_repr
 
 from ingredients_db.database import Base
@@ -27,20 +28,9 @@ class Task(Base):
     stopped_at = Column(ArrowType(timezone=True))
 
 
-@generic_repr
-class TaskableEntity(Base):
-    __tablename__ = 'taskable_entities'
+class TaskMixin(object):
+    @declared_attr
+    def current_task_id(cls):
+        return Column(UUIDType, ForeignKey('tasks.id'))
 
-    id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
-    type = Column(String, nullable=False)
-
-    current_task_id = Column(UUIDType, ForeignKey('tasks.id'))
-
-    # TODO: updated_at doesn't update when child updates. How to fix?
-    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False, index=True)
-    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
-
-    __mapper_args__ = {
-        'polymorphic_identity': 'entity',
-        'polymorphic_on': type
-    }
+        # TODO: updated_at doesn't update when child updates. How to fix?

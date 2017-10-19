@@ -31,19 +31,7 @@ def upgrade():
                   nullable=False),
         sa.Column('stopped_at', sau.ArrowType(timezone=True)),
     )
-    op.create_table(
-        'taskable_entities',
-        sa.Column('id', sau.UUIDType, server_default=sa.text("uuid_generate_v4()"), primary_key=True),
-        sa.Column('type', sa.String, nullable=False),
-
-        sa.Column('current_task_id', sau.UUIDType, sa.ForeignKey('tasks.id')),
-
-        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False, index=True),
-        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
-                  nullable=False)
-    )
 
 
 def downgrade():
-    op.drop_table('taskable_entities')
     op.drop_table('tasks')

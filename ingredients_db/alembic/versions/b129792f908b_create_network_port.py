@@ -29,13 +29,6 @@ def upgrade():
                   nullable=False)
     )
 
-    op.create_table(
-        'networkable_entities',
-        sa.Column('id', sau.UUIDType, sa.ForeignKey('taskable_entities.id'), primary_key=True),
-        sa.Column('network_port_id', sau.UUIDType, sa.ForeignKey('network_ports.id', ondelete='RESTRICT')),
-    )
-
 
 def downgrade():
-    op.drop_table('networkable_entities')
     op.drop_table('network_ports')

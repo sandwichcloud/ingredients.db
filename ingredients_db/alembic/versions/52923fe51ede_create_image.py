@@ -1,7 +1,7 @@
 """create image
 
 Revision ID: 52923fe51ede
-Revises: f422a466b0a8
+Revises: dadf4ada480a
 Create Date: 2017-09-17 09:55:58.239260
 
 """
@@ -14,7 +14,7 @@ from ingredients_db.models.images import ImageVisibility, ImageState
 # revision identifiers, used by Alembic.
 
 revision = '52923fe51ede'
-down_revision = 'f422a466b0a8'
+down_revision = 'dadf4ada480a'
 branch_labels = None
 depends_on = None
 
@@ -22,7 +22,7 @@ depends_on = None
 def upgrade():
     op.create_table(
         'images',
-        sa.Column('id', sau.UUIDType, sa.ForeignKey('taskable_entities.id'), primary_key=True),
+        sa.Column('id', sau.UUIDType, server_default=sa.text("uuid_generate_v4()"), primary_key=True),
 
         sa.Column('name', sa.String, nullable=False),
         sa.Column('file_name', sa.String, unique=True, nullable=False),
@@ -32,6 +32,10 @@ def upgrade():
         sa.Column('visibility', sa.Enum(ImageVisibility), default=ImageVisibility.PRIVATE, nullable=False),
 
         sa.Column('project_id', sau.UUIDType, sa.ForeignKey('projects.id', ondelete='RESTRICT'), nullable=False),
+        sa.Column('current_task_id', sau.UUIDType, sa.ForeignKey('tasks.id')),
+        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
+                  nullable=False),
     )
 
     op.create_table(

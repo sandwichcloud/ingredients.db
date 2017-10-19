@@ -8,7 +8,6 @@ Create Date: 2017-09-17 10:17:05.262655
 import sqlalchemy as sa
 import sqlalchemy_utils as sau
 from alembic import op
-from sqlalchemy import ForeignKey
 
 # revision identifiers, used by Alembic.
 from ingredients_db.models.network import NetworkState
@@ -23,8 +22,9 @@ depends_on = None
 def upgrade():
     op.create_table(
         'networks',
-        sa.Column('id', sau.UUIDType, ForeignKey('taskable_entities.id'), primary_key=True),
+        sa.Column('id', sau.UUIDType, server_default=sa.text("uuid_generate_v4()"), primary_key=True),
         sa.Column('name', sa.String, unique=True, nullable=False),
+        sa.Column('current_task_id', sau.UUIDType, sa.ForeignKey('tasks.id')),
 
         sa.Column('port_group', sa.String, unique=True, nullable=False),
 
@@ -33,6 +33,9 @@ def upgrade():
         sa.Column('cidr', IPv4Network, nullable=False),
         sa.Column('pool_start', sau.IPAddressType, nullable=False),
         sa.Column('pool_end', sau.IPAddressType, nullable=False),
+        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
+                  nullable=False),
 
     )
 

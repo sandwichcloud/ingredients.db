@@ -6,8 +6,10 @@ from sqlalchemy.orm import relationship
 from sqlalchemy_utils import UUIDType, generic_repr, ArrowType
 
 from ingredients_db.database import Base
-from ingredients_db.models.network_port import NetworkableEntity
+from ingredients_db.models.network_port import NetworkableMixin
+from ingredients_db.models.project import ProjectMixin
 from ingredients_db.models.public_key import PublicKey
+from ingredients_db.models.task import TaskMixin
 
 
 class InstanceState(enum.Enum):
@@ -24,22 +26,20 @@ class InstanceState(enum.Enum):
 
 
 @generic_repr
-class Instance(NetworkableEntity):
+class Instance(Base, TaskMixin, NetworkableMixin, ProjectMixin):
     __tablename__ = 'instances'
 
-    id = Column(UUIDType, ForeignKey('networkable_entities.id'), primary_key=True)
+    id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
     name = Column(String, nullable=False)
     tags = Column(HSTORE)
     state = Column(Enum(InstanceState), default=InstanceState.BUILDING, nullable=False)
 
-    project_id = Column(UUIDType, ForeignKey('projects.id', ondelete='RESTRICT'), nullable=False)
     image_id = Column(UUIDType, ForeignKey('images.id', ondelete='SET NULL'))
 
     public_keys = relationship(PublicKey, secondary='instance_public_keys')
 
-    __mapper_args__ = {
-        'polymorphic_identity': 'instance'
-    }
+    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False, index=True)
+    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
 
 class InstancePublicKey(Base):

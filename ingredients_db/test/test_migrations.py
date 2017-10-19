@@ -72,12 +72,12 @@ class TestMigrations(object):
         from ingredients_db.models.images import Image, ImageMembers
         from ingredients_db.models.instance import Instance, InstancePublicKey
         from ingredients_db.models.network import Network
-        from ingredients_db.models.network_port import NetworkPort, NetworkableEntity
+        from ingredients_db.models.network_port import NetworkPort
         from ingredients_db.models.project import Project
         from ingredients_db.models.public_key import PublicKey
-        from ingredients_db.models.task import Task, TaskableEntity
+        from ingredients_db.models.task import Task
         from ingredients_db.models.authn import AuthNUser, AuthNToken
-        from ingredients_db.models.authz import AuthZPolicy, AuthZRule, AuthZRole
+        from ingredients_db.models.authz import AuthZPolicy, AuthZRole
 
         # Make sure the imports don't go away
         Image.mro()
@@ -86,15 +86,12 @@ class TestMigrations(object):
         InstancePublicKey.mro()
         Network.mro()
         NetworkPort.mro()
-        NetworkableEntity.mro()
         Project.mro()
         PublicKey.mro()
         Task.mro()
-        TaskableEntity.mro()
         AuthNUser.mro()
         AuthNToken.mro()
         AuthZPolicy.mro()
-        AuthZRule.mro()
         AuthZRole.mro()
 
         setup_extensions(uri_right)

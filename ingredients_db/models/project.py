@@ -1,7 +1,7 @@
 import enum
 
-from sqlalchemy import Column, text, func, String, Enum
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, text, func, String, Enum, ForeignKey
+from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy_utils import UUIDType, ArrowType, generic_repr
 
 from ingredients_db.database import Base
@@ -29,4 +29,8 @@ class Project(Base):
     created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False, index=True)
     updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
-    shared_images = relationship('Image', secondary='image_members')
+
+class ProjectMixin(object):
+    @declared_attr
+    def project_id(cls):
+        return Column(UUIDType, ForeignKey('projects.id', ondelete='RESTRICT'), nullable=False)

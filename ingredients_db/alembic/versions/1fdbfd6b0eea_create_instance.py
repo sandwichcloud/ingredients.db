@@ -9,7 +9,6 @@ import sqlalchemy as sa
 import sqlalchemy_utils as sau
 from alembic import op
 # revision identifiers, used by Alembic.
-from sqlalchemy import ForeignKey
 from sqlalchemy.dialects.postgresql import HSTORE
 
 from ingredients_db.models.instance import InstanceState
@@ -23,13 +22,17 @@ depends_on = None
 def upgrade():
     op.create_table(
         'instances',
-        sa.Column('id', sau.UUIDType, ForeignKey('networkable_entities.id'), primary_key=True),
+        sa.Column('id', sau.UUIDType, server_default=sa.text("uuid_generate_v4()"), primary_key=True),
         sa.Column('name', sa.String, nullable=False),
         sa.Column('tags', HSTORE),
         sa.Column('state', sa.Enum(InstanceState), default=InstanceState.BUILDING, nullable=False),
 
         sa.Column('project_id', sau.UUIDType, sa.ForeignKey('projects.id', ondelete='RESTRICT'), nullable=False),
-        sa.Column('image_id', sau.UUIDType, sa.ForeignKey('images.id', ondelete='SET NULL'))
+        sa.Column('current_task_id', sau.UUIDType, sa.ForeignKey('tasks.id')),
+        sa.Column('image_id', sau.UUIDType, sa.ForeignKey('images.id', ondelete='SET NULL')),
+        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
+                  nullable=False),
 
     )
 

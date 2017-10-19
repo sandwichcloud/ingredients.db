@@ -9,23 +9,23 @@ class AuthZPolicy(Base):
 
     id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
     name = Column(String, nullable=False, unique=True)
-    value = Column(String, nullable=False)
+    rule = Column(String, nullable=False)
     description = Column(String)
 
     created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
 
-class AuthZRule(Base):
-    __tablename__ = 'authz_rules'
-
-    id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
-    name = Column(String, nullable=False, unique=True)
-    value = Column(String, nullable=False)
-    description = Column(String)
-
-    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+# class AuthZRule(Base):
+#     __tablename__ = 'authz_rules'
+#
+#     id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
+#     name = Column(String, nullable=False, unique=True)
+#     value = Column(String, nullable=False)
+#     description = Column(String)
+#
+#     created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False)
+#     updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
 
 class AuthZRole(Base):
@@ -33,6 +33,7 @@ class AuthZRole(Base):
 
     id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
     name = Column(String, nullable=False, unique=True)
+    description = Column(String)
 
     created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)

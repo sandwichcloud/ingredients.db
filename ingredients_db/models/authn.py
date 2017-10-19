@@ -33,3 +33,14 @@ class AuthNToken(Base):
     created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False, index=True)
     updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     expires_at = Column(ArrowType(timezone=True), default=arrow.now().shift(days=+1), nullable=False)
+
+
+class AuthNTokenRole(Base):
+    __tablename__ = 'authn_token_roles'
+
+    id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
+    token_id = Column(UUIDType, ForeignKey('authn_tokens.id', ondelete='CASCADE'), nullable=False)
+    role_id = Column(UUIDType, ForeignKey('authz_roles.id', ondelete='CASCADE'), nullable=False)
+
+    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False, index=True)
+    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)

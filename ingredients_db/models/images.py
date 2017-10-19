@@ -1,12 +1,12 @@
 import enum
 
-from sqlalchemy import Column, func, String, ForeignKey, Enum, Boolean
+from sqlalchemy import Column, func, String, ForeignKey, Enum, Boolean, text
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import UUIDType, ArrowType, generic_repr
 
 from ingredients_db.database import Base
-from ingredients_db.models.project import Project
-from ingredients_db.models.task import TaskableEntity
+from ingredients_db.models.project import Project, ProjectMixin
+from ingredients_db.models.task import TaskMixin
 
 
 class ImageState(enum.Enum):
@@ -36,11 +36,10 @@ class ImageMembers(Base):
 # TODO: Image families
 
 @generic_repr
-class Image(TaskableEntity):
+class Image(Base, TaskMixin, ProjectMixin):
     __tablename__ = 'images'
 
-    id = Column(UUIDType, ForeignKey('taskable_entities.id'), primary_key=True)
-
+    id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
     name = Column(String, nullable=False)
     file_name = Column(String, unique=True, nullable=False)
     locked = Column(Boolean, default=False, nullable=False)
@@ -48,10 +47,7 @@ class Image(TaskableEntity):
     state = Column(Enum(ImageState), default=ImageState.CREATING, nullable=False)
     visibility = Column(Enum(ImageVisibility), default=ImageVisibility.PRIVATE, nullable=False)
 
-    project_id = Column(UUIDType, ForeignKey('projects.id', ondelete='RESTRICT'), nullable=False)
+    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False, index=True)
+    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
     members = relationship(Project, secondary='image_members')
-
-    __mapper_args__ = {
-        'polymorphic_identity': 'image'
-    }

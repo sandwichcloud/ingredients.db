@@ -2,11 +2,12 @@ import enum
 import ipaddress
 from typing import Optional
 
-from sqlalchemy import Column, String, Enum, ForeignKey
-from sqlalchemy_utils import UUIDType, generic_repr, IPAddressType
+from sqlalchemy import Column, String, Enum, text, func
+from sqlalchemy_utils import UUIDType, generic_repr, IPAddressType, ArrowType
 
+from ingredients_db.database import Base
 from ingredients_db.models.network_port import NetworkPort
-from ingredients_db.models.task import TaskableEntity
+from ingredients_db.models.task import TaskMixin
 from ingredients_db.types import IPv4Network
 
 
@@ -19,10 +20,10 @@ class NetworkState(enum.Enum):
 
 
 @generic_repr
-class Network(TaskableEntity):
+class Network(Base, TaskMixin):
     __tablename__ = 'networks'
 
-    id = Column(UUIDType, ForeignKey('taskable_entities.id'), primary_key=True)
+    id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
     name = Column(String, unique=True, nullable=False)
 
     port_group = Column(String, unique=True, nullable=False)
@@ -33,9 +34,8 @@ class Network(TaskableEntity):
     pool_start = Column(IPAddressType, nullable=False)
     pool_end = Column(IPAddressType, nullable=False)
 
-    __mapper_args__ = {
-        'polymorphic_identity': 'network'
-    }
+    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False, index=True)
+    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
     def next_free_address(self, session) -> Optional[ipaddress.IPv4Address]:
         ip_network = ipaddress.ip_network(self.cidr)

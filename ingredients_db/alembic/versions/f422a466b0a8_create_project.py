@@ -30,21 +30,6 @@ def upgrade():
                   nullable=False)
     )
 
-    op.create_table(
-        'authn_tokens',
-        sa.Column('id', sau.UUIDType, server_default=sa.text("uuid_generate_v4()"), primary_key=True),
-        sa.Column('access_token', sa.String, nullable=False, index=True),
-
-        sa.Column('user_id', sau.UUIDType, sa.ForeignKey('authn_users.id', ondelete='CASCADE'), nullable=False),
-        sa.Column('project_id', sau.UUIDType, sa.ForeignKey('projects.id', ondelete='CASCADE')),
-
-        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False, index=True),
-        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
-                  nullable=False),
-        sa.Column('expires_at', sau.ArrowType(timezone=True), nullable=False)
-    )
-
 
 def downgrade():
-    op.drop_table('authn_tokens')
     op.drop_table('projects')
