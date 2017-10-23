@@ -1,6 +1,7 @@
 [run]
 omit =
     */test/*
+    ingredients_db/alembic/env.py
 
 [report]
 exclude_lines =

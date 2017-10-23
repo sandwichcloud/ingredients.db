@@ -1,4 +1,5 @@
 import json
+import os
 
 import pytest
 from alembic import command
@@ -19,7 +20,7 @@ def alembic_root():
 
 @pytest.fixture()
 def uri():
-    yield "postgresql+psycopg2://postgres@localhost"
+    yield "postgresql+psycopg2://postgres@127.0.0.1" if 'CI' in os.environ else os.environ['TEST_DB_URL']
 
 
 @pytest.fixture()
