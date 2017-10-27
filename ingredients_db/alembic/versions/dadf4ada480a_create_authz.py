@@ -78,7 +78,7 @@ def upgrade():
             {"name": "is_admin", "rule": "role:admin", "description": "Is the user in the admin role"},
             {"name": "admin_or_member", "rule": "rule:is_admin or project_id:%(project_id)s",
              "description": "Is the user in the admin role or a member of the project of the requested object"},
-            {"name": "admin_or_self", "rule": "rule:is_admin or user_id:%(user_id)",
+            {"name": "admin_or_self", "rule": "rule:is_admin or user_id:%(user_id)s",
              "description": "Is the user in the admin role or the requested object matches the user id"},
 
             # Policies
