@@ -1,5 +1,5 @@
 import arrow
-from sqlalchemy import func, Column, String, text, ForeignKey, UniqueConstraint
+from sqlalchemy import Column, String, text, ForeignKey, UniqueConstraint
 from sqlalchemy_utils import generic_repr, ArrowType, UUIDType
 
 from ingredients_db.database import Base
@@ -16,8 +16,9 @@ class AuthNUser(Base):
     username = Column(String, nullable=False)
     driver = Column(String, nullable=False)
 
-    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False)
+    updated_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'),
+                        onupdate=text('clock_timestamp()'), nullable=False)
 
 
 @generic_repr
@@ -30,8 +31,9 @@ class AuthNToken(Base):
     user_id = Column(UUIDType, ForeignKey('authn_users.id', ondelete='CASCADE'), nullable=False)
     project_id = Column(UUIDType, ForeignKey('projects.id', ondelete='CASCADE'))
 
-    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False, index=True)
-    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False, index=True)
+    updated_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'),
+                        onupdate=text('clock_timestamp()'), nullable=False)
     expires_at = Column(ArrowType(timezone=True), default=arrow.now().shift(days=+1), nullable=False)
 
 
@@ -42,5 +44,6 @@ class AuthNTokenRole(Base):
     token_id = Column(UUIDType, ForeignKey('authn_tokens.id', ondelete='CASCADE'), nullable=False)
     role_id = Column(UUIDType, ForeignKey('authz_roles.id', ondelete='CASCADE'), nullable=False)
 
-    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False, index=True)
-    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False, index=True)
+    updated_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'),
+                        onupdate=text('clock_timestamp()'), nullable=False)

@@ -1,4 +1,4 @@
-from sqlalchemy import text, Column, String, Text, func, ForeignKey
+from sqlalchemy import text, Column, String, Text, ForeignKey
 from sqlalchemy_utils import UUIDType, generic_repr, ArrowType
 
 from ingredients_db.database import Base
@@ -14,5 +14,6 @@ class PublicKey(Base):
 
     project_id = Column(UUIDType, ForeignKey('projects.id', ondelete='CASCADE'), nullable=False)
 
-    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False)
+    updated_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'),
+                        onupdate=text('clock_timestamp()'), nullable=False)

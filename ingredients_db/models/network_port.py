@@ -1,4 +1,4 @@
-from sqlalchemy import Column, text, func, ForeignKey
+from sqlalchemy import Column, text, ForeignKey
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy_utils import UUIDType, ArrowType, generic_repr, IPAddressType
 
@@ -14,8 +14,9 @@ class NetworkPort(Base):
     network_id = Column(UUIDType, ForeignKey('networks.id', ondelete='RESTRICT'), nullable=False)
     ip_address = Column(IPAddressType)
 
-    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False, index=True)
-    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False, index=True)
+    updated_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'),
+                        onupdate=text('clock_timestamp()'), nullable=False)
 
 
 class NetworkableMixin(object):

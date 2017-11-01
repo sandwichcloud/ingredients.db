@@ -1,4 +1,4 @@
-from sqlalchemy import text, Column, func, String
+from sqlalchemy import text, Column, String
 from sqlalchemy_utils import UUIDType, ArrowType
 
 from ingredients_db.database import Base
@@ -13,8 +13,9 @@ class AuthZPolicy(Base):
     rule = Column(String, nullable=False)
     description = Column(String)
 
-    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False)
+    updated_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'),
+                        onupdate=text('clock_timestamp()'), nullable=False)
 
 
 # TODO: should we have locked roles to prevent accidental deletion?
@@ -25,5 +26,6 @@ class AuthZRole(Base):
     name = Column(String, nullable=False, unique=True)
     description = Column(String)
 
-    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False)
+    updated_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'),
+                        onupdate=text('clock_timestamp()'), nullable=False)

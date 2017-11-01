@@ -1,6 +1,6 @@
 import enum
 
-from sqlalchemy import Column, func, String, ForeignKey, Enum, Boolean, text
+from sqlalchemy import Column, String, ForeignKey, Enum, Boolean, text
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import UUIDType, ArrowType, generic_repr
 
@@ -30,7 +30,7 @@ class ImageMembers(Base):
     image_id = Column(UUIDType, ForeignKey('images.id', ondelete='CASCADE'), nullable=False, primary_key=True)
     project_id = Column(UUIDType, ForeignKey('projects.id', ondelete='CASCADE'), nullable=False, primary_key=True)
 
-    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False, index=True)
+    created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False, index=True)
 
 
 # TODO: Image families
@@ -47,7 +47,8 @@ class Image(Base, TaskMixin, ProjectMixin):
     state = Column(Enum(ImageState), default=ImageState.CREATING, nullable=False)
     visibility = Column(Enum(ImageVisibility), default=ImageVisibility.PRIVATE, nullable=False)
 
-    created_at = Column(ArrowType(timezone=True), server_default=func.now(), nullable=False, index=True)
-    updated_at = Column(ArrowType(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False, index=True)
+    updated_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'),
+                        onupdate=text('clock_timestamp()'), nullable=False)
 
     members = relationship(Project, secondary='image_members')
