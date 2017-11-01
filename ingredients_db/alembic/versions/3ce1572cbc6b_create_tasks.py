@@ -26,8 +26,10 @@ def upgrade():
         sa.Column('state', sa.Enum(TaskState), default=TaskState.PENDING, nullable=False),
         sa.Column('error_message', sa.Text),
 
-        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
+        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  nullable=False),
+        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  onupdate=sa.text('clock_timestamp()'),
                   nullable=False),
         sa.Column('stopped_at', sau.ArrowType(timezone=True)),
     )

@@ -23,8 +23,10 @@ def upgrade():
         sa.Column('name', sa.String, nullable=False, unique=True),
         sa.Column('rule', sa.String, nullable=False),
         sa.Column('description', sa.String),
-        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
+        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  nullable=False),
+        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  onupdate=sa.text('clock_timestamp()'),
                   nullable=False)
     )
 
@@ -33,8 +35,10 @@ def upgrade():
         sa.Column('id', sau.UUIDType, server_default=sa.text("uuid_generate_v4()"), primary_key=True),
         sa.Column('name', sa.String, nullable=False, unique=True),
         sa.Column('description', sa.String),
-        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
+        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  nullable=False),
+        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  onupdate=sa.text('clock_timestamp()'),
                   nullable=False)
     )
 
@@ -46,8 +50,10 @@ def upgrade():
         sa.Column('user_id', sau.UUIDType, sa.ForeignKey('authn_users.id', ondelete='CASCADE'), nullable=False),
         sa.Column('project_id', sau.UUIDType, sa.ForeignKey('projects.id', ondelete='CASCADE')),
 
-        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False, index=True),
-        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
+        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  nullable=False, index=True),
+        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  onupdate=sa.text('clock_timestamp()'),
                   nullable=False),
         sa.Column('expires_at', sau.ArrowType(timezone=True), nullable=False)
     )
@@ -59,8 +65,10 @@ def upgrade():
         sa.Column('token_id', sau.UUIDType, sa.ForeignKey('authn_tokens.id', ondelete='CASCADE'), nullable=False),
         sa.Column('role_id', sau.UUIDType, sa.ForeignKey('authz_roles.id', ondelete='CASCADE'), nullable=False),
 
-        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False, index=True),
-        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
+        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  nullable=False, index=True),
+        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  onupdate=sa.text('clock_timestamp()'),
                   nullable=False),
     )
 
@@ -132,7 +140,9 @@ def upgrade():
             {"name": "instances:action:image:public", "rule": "rule:is_admin",
              "description": "Ability to create a public image from an instance"},
             {"name": "instances:action:reset_state", "rule": "rule:admin_or_member",
-             "description": "Ability to reset the state of an instance"},
+             "description": "Ability to reset the state of an instance to error"},
+            {"name": "instances:action:reset_state:active", "rule": "rule:is_admin",
+             "description": "Ability to reset the state of an instance to active"},
 
             # Networks
             {"name": "networks:create", "rule": "rule:is_admin", "description": "Ability to create a network"},

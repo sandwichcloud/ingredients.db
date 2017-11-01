@@ -33,8 +33,10 @@ def upgrade():
         sa.Column('cidr', IPv4Network, nullable=False),
         sa.Column('pool_start', sau.IPAddressType, nullable=False),
         sa.Column('pool_end', sau.IPAddressType, nullable=False),
-        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False, index=True),
-        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
+        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  nullable=False, index=True),
+        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  onupdate=sa.text('clock_timestamp()'),
                   nullable=False),
 
     )

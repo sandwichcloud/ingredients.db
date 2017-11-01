@@ -25,8 +25,10 @@ def upgrade():
         sa.Column('name', sa.String, unique=True, nullable=False),
         sa.Column('state', sa.Enum(ProjectState), default=ProjectState.CREATED, nullable=False),
 
-        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False, index=True),
-        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
+        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  nullable=False, index=True),
+        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  onupdate=sa.text('clock_timestamp()'),
                   nullable=False)
     )
 

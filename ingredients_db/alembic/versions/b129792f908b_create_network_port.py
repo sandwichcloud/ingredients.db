@@ -24,8 +24,10 @@ def upgrade():
         sa.Column('network_id', sau.UUIDType, sa.ForeignKey('networks.id', ondelete='RESTRICT'), nullable=False),
         sa.Column('ip_address', sau.IPAddressType),
 
-        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), nullable=False, index=True),
-        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now(),
+        sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  nullable=False, index=True),
+        sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
+                  onupdate=sa.text('clock_timestamp()'),
                   nullable=False)
     )
 
