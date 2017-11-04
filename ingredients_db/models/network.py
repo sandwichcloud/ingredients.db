@@ -3,6 +3,7 @@ import ipaddress
 from typing import Optional
 
 from sqlalchemy import Column, String, Enum, text
+from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy_utils import UUIDType, generic_repr, IPAddressType, ArrowType
 
 from ingredients_db.database import Base
@@ -27,6 +28,8 @@ class Network(Base, TaskMixin):
     name = Column(String, unique=True, nullable=False)
 
     port_group = Column(String, unique=True, nullable=False)
+    gateway = Column(IPAddressType, nullable=False)
+    dns_servers = Column(ARRAY(IPAddressType), nullable=False)
 
     state = Column(Enum(NetworkState), default=NetworkState.CREATING, nullable=False)
 
@@ -46,6 +49,14 @@ class Network(Base, TaskMixin):
         for host in ip_network.hosts():
             start_host = ipaddress.IPv4Address(self.pool_start)
             end_host = ipaddress.IPv4Address(self.pool_end)
+
+            if host == self.gateway:
+                # Skip the gateway
+                continue
+
+            if host in self.dns_servers:
+                # Skip dns servers if in range
+                continue
 
             if start_host <= host <= end_host:
                 ip_addresses.append(host)
