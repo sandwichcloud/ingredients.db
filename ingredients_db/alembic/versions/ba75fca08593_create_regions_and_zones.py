@@ -44,7 +44,7 @@ def upgrade():
         'zones',
         sa.Column('id', sau.UUIDType, server_default=sa.text("uuid_generate_v4()"), primary_key=True),
         sa.Column('name', sa.String, unique=True, nullable=False),
-        sa.Column('region_id', sau.UUIDType, sa.ForeignKey('regions.id'), nullable=False),
+        sa.Column('region_id', sau.UUIDType, sa.ForeignKey('regions.id', ondelete='RESTRICT'), nullable=False),
         sa.Column('vm_cluster', sa.String, nullable=False),
         sa.Column('vm_datastore', sa.String, nullable=False),
         sa.Column('vm_folder', sa.String),

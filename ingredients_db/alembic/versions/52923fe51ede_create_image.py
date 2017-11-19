@@ -32,7 +32,7 @@ def upgrade():
         sa.Column('visibility', sa.Enum(ImageVisibility), default=ImageVisibility.PRIVATE, nullable=False),
 
         sa.Column('project_id', sau.UUIDType, sa.ForeignKey('projects.id', ondelete='RESTRICT'), nullable=False),
-        sa.Column('region_id', sau.UUIDType, sa.ForeignKey('regions.id'), nullable=False),
+        sa.Column('region_id', sau.UUIDType, sa.ForeignKey('regions.id', ondelete='RESTRICT'), nullable=False),
 
         sa.Column('current_task_id', sau.UUIDType, sa.ForeignKey('tasks.id')),
         sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
