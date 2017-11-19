@@ -8,6 +8,7 @@ from sqlalchemy_utils import UUIDType, generic_repr, IPAddressType, ArrowType
 
 from ingredients_db.database import Base
 from ingredients_db.models.network_port import NetworkPort
+from ingredients_db.models.region import RegionableNixin
 from ingredients_db.models.task import TaskMixin
 from ingredients_db.types import IPv4Network
 
@@ -21,7 +22,7 @@ class NetworkState(enum.Enum):
 
 
 @generic_repr
-class Network(Base, TaskMixin):
+class Network(Base, TaskMixin, RegionableNixin):
     __tablename__ = 'networks'
 
     id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)

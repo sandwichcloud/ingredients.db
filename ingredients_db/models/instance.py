@@ -9,7 +9,9 @@ from ingredients_db.database import Base
 from ingredients_db.models.network_port import NetworkableMixin
 from ingredients_db.models.project import ProjectMixin
 from ingredients_db.models.public_key import PublicKey
+from ingredients_db.models.region import RegionableNixin
 from ingredients_db.models.task import TaskMixin
+from ingredients_db.models.zones import ZonableMixin
 
 
 class InstanceState(enum.Enum):
@@ -26,7 +28,7 @@ class InstanceState(enum.Enum):
 
 
 @generic_repr
-class Instance(Base, TaskMixin, NetworkableMixin, ProjectMixin):
+class Instance(Base, TaskMixin, NetworkableMixin, ProjectMixin, RegionableNixin, ZonableMixin):
     __tablename__ = 'instances'
 
     id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)

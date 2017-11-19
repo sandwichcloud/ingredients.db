@@ -106,8 +106,30 @@ def upgrade():
             {"name": "roles:list", "rule": "role:admin", "description": "Ability to list roles"},
             {"name": "roles:delete", "rule": "role:admin", "description": "Ability to delete a role"},
 
+            # Regions
+            {"name": "regions:create", "rule": "role:admin", "description": "Ability to create a region"},
+            {"name": "regions:get", "rule": "", "description": "Ability to get a region"},
+            {"name": "regions:list", "rule": "", "description": "Ability to list regions"},
+            {"name": "regions:delete", "rule": "role:admin", "description": "Ability to delete a region"},
+            {"name": "regions:action:schedule", "rule": "role:admin",
+             "description": "Ability to change the schedule mode of the region"},
+
+            # Zones
+            {"name": "zones:create", "rule": "role:admin", "description": "Ability to create a zone"},
+            {"name": "zones:get", "rule": "", "description": "Ability to get a zone"},
+            {"name": "zones:list", "rule": "", "description": "Ability to list zones"},
+            {"name": "zones:delete", "rule": "role:admin", "description": "Ability to delete a zone"},
+            {"name": "zones:action:schedule", "rule": "role:admin",
+             "description": "Ability to change the schedule mode of the zone"},
+
             # Tokens
             {"name": "tokens:get", "rule": "rule:admin_or_self", "description": "Ability to get a token"},
+
+            # Projects
+            {"name": "projects:create", "rule": "rule:is_admin", "description": "Ability to create a project"},
+            {"name": "projects:get", "rule": "", "description": "Ability to get a project"},
+            {"name": "projects:list", "rule": "", "description": "Ability to list projects"},
+            {"name": "projects:delete", "rule": "rule:is_admin", "description": "Ability to delete a project"},
 
             # Tasks
 
@@ -149,12 +171,6 @@ def upgrade():
             {"name": "networks:get", "rule": "", "description": "Ability to get a network"},
             {"name": "networks:list", "rule": "", "description": "Ability to list networks"},
             {"name": "networks:delete", "rule": "rule:is_admin", "description": "Ability to delete a network"},
-
-            # Projects
-            {"name": "projects:create", "rule": "rule:is_admin", "description": "Ability to create a project"},
-            {"name": "projects:get", "rule": "", "description": "Ability to get a project"},
-            {"name": "projects:list", "rule": "", "description": "Ability to list projects"},
-            {"name": "projects:delete", "rule": "rule:is_admin", "description": "Ability to delete a project"},
 
         ]
     )

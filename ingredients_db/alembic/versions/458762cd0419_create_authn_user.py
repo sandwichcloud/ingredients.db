@@ -1,7 +1,7 @@
 """create authn user
 
 Revision ID: 458762cd0419
-Revises: 3ce1572cbc6b
+Revises: ba75fca08593
 Create Date: 2017-09-16 09:24:55.054833
 
 """
@@ -11,7 +11,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '458762cd0419'
-down_revision = '3ce1572cbc6b'
+down_revision = 'ba75fca08593'
 branch_labels = None
 depends_on = None
 

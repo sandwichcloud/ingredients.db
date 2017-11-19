@@ -6,6 +6,7 @@ from sqlalchemy_utils import UUIDType, ArrowType, generic_repr
 
 from ingredients_db.database import Base
 from ingredients_db.models.project import Project, ProjectMixin
+from ingredients_db.models.region import RegionableNixin
 from ingredients_db.models.task import TaskMixin
 
 
@@ -36,7 +37,7 @@ class ImageMembers(Base):
 # TODO: Image families
 
 @generic_repr
-class Image(Base, TaskMixin, ProjectMixin):
+class Image(Base, TaskMixin, ProjectMixin, RegionableNixin):
     __tablename__ = 'images'
 
     id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
