@@ -29,6 +29,7 @@ def upgrade():
         sa.Column('port_group', sa.String, unique=True, nullable=False),
         sa.Column('gateway', sau.IPAddressType, nullable=False),
         sa.Column('dns_servers', sa.ARRAY(sau.IPAddressType), nullable=False),
+        sa.Column('region_id', sau.UUIDType, sa.ForeignKey('regions.id', ondelete='RESTRICT'), nullable=False),
 
         sa.Column('state', sa.Enum(NetworkState), default=NetworkState.CREATING, nullable=False),
 

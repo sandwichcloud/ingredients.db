@@ -79,6 +79,8 @@ class TestMigrations(object):
         from ingredients_db.models.task import Task
         from ingredients_db.models.authn import AuthNUser, AuthNToken
         from ingredients_db.models.authz import AuthZPolicy, AuthZRole
+        from ingredients_db.models.region import Region
+        from ingredients_db.models.zones import Zone
 
         # Make sure the imports don't go away
         Image.mro()
@@ -94,6 +96,8 @@ class TestMigrations(object):
         AuthNToken.mro()
         AuthZPolicy.mro()
         AuthZRole.mro()
+        Region.mro()
+        Zone.mro()
 
         setup_extensions(uri_right)
         prepare_schema_from_models(uri_right, Base)
