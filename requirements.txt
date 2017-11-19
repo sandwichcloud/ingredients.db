@@ -1,5 +1,5 @@
 sqlalchemy==1.1.14 # MIT
 sqlalchemy-utils==0.32.16 # BSD-3-Clause
-psycopg2==2.7.3.1 # LGPL
 alembic==0.9.5 # MIT
 arrow==0.10.0 # Apache 2.0
+psycopg2 # LGPL
