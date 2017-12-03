@@ -81,7 +81,7 @@ class Database(object):
             cursor = dbapi_connection.cursor()
             try:
                 cursor.execute("SELECT 1")
-            except:
+            except:  # noqa: E722
                 connection_proxy._pool.dispose()
                 # raise DisconnectionError - pool will try
                 # connecting again up to three times before raising.
