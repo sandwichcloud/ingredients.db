@@ -1,18 +1,17 @@
-from sqlalchemy import text, Column, String, Text, ForeignKey
-from sqlalchemy_utils import UUIDType, generic_repr, ArrowType
+from sqlalchemy import String, Column, text
+from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy_utils import ArrowType, UUIDType, PasswordType
 
 from ingredients_db.database import Base
 
 
-@generic_repr
-class PublicKey(Base):
-    __tablename__ = 'public_keys'
+class BuiltInUser(Base):
+    __tablename__ = 'builtin_users'
 
     id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
-    name = Column(String, nullable=False)
-    key = Column(Text, nullable=False)
-
-    project_id = Column(UUIDType, ForeignKey('projects.id', ondelete='CASCADE'), nullable=False)
+    username = Column(String, nullable=False, unique=True)
+    password = Column(PasswordType(schemes=['bcrypt']), nullable=False)
+    roles = Column(ARRAY(String), default=list)
 
     created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False, index=True)
     updated_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'),

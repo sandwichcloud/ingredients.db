@@ -14,10 +14,6 @@ class ProjectState(enum.Enum):
     ERROR = 'ERROR'
 
 
-# TODO: project members (users)
-# only project members can do things within the project
-
-
 @generic_repr
 class Project(Base):
     __tablename__ = 'projects'
@@ -35,3 +31,17 @@ class ProjectMixin(object):
     @declared_attr
     def project_id(cls):
         return Column(UUIDType, ForeignKey('projects.id', ondelete='RESTRICT'), nullable=False)
+
+
+@generic_repr
+class ProjectMembers(Base):
+    __tablename__ = 'project_members'
+
+    id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
+    user_id = Column(UUIDType, ForeignKey('authn_users.id', ondelete='CASCADE'), nullable=False, index=True)
+    role_id = Column(UUIDType, ForeignKey('authz_roles.id', ondelete='RESTRICT'), nullable=False, index=True)
+    project_id = Column(UUIDType, ForeignKey('projects.id', ondelete='CASCADE'), nullable=False, index=True)
+
+    created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False, index=True)
+    updated_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'),
+                        onupdate=text('clock_timestamp()'), nullable=False)

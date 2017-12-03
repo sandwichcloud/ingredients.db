@@ -14,7 +14,9 @@ from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.pool import QueuePool, NullPool
+from sqlalchemy_utils import force_auto_coercion
 
+force_auto_coercion()
 Base = declarative_base()
 
 
@@ -46,6 +48,7 @@ class Database(object):
         else:
             self.engine = create_engine(URL(**database), poolclass=QueuePool, pool_size=self.pool_size)
             self._add_process_guards(self.engine)
+            self._add_disconnection_guards(self.engine)
 
     def _add_process_guards(self, engine):
         """Add multiprocessing guards.
@@ -72,14 +75,25 @@ class Database(object):
                         connection_record.info['pid'], pid)
                 )
 
+    def _add_disconnection_guards(self, engine):
+        @sqlalchemy.event.listens_for(engine.pool, "checkout")
+        def ping_connection(dbapi_connection, connection_record, connection_proxy):
+            cursor = dbapi_connection.cursor()
+            try:
+                cursor.execute("SELECT 1")
+            except:
+                connection_proxy._pool.dispose()
+                # raise DisconnectionError - pool will try
+                # connecting again up to three times before raising.
+                raise exc.DisconnectionError()
+            cursor.close()
+
     @contextmanager
     def session(self):
 
         session = scoped_session(sessionmaker())
         session.configure(bind=self.engine)
         session = session()
-
-        session.execute('SELECT 1').scalar()
 
         try:
             yield session

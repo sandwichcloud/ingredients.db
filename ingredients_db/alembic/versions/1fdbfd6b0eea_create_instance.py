@@ -29,6 +29,8 @@ def upgrade():
         sa.Column('network_port_id', sau.UUIDType, sa.ForeignKey('network_ports.id', ondelete='RESTRICT')),
         sa.Column('region_id', sau.UUIDType, sa.ForeignKey('regions.id', ondelete='RESTRICT'), nullable=False),
         sa.Column('zone_id', sau.UUIDType, sa.ForeignKey('zones.id', ondelete='RESTRICT')),
+        sa.Column('service_account_id', sau.UUIDType, sa.ForeignKey('authn_service_accounts.id', ondelete='RESTRICT'),
+                  nullable=False),
 
         sa.Column('project_id', sau.UUIDType, sa.ForeignKey('projects.id', ondelete='RESTRICT'), nullable=False),
         sa.Column('current_task_id', sau.UUIDType, sa.ForeignKey('tasks.id')),
@@ -38,7 +40,6 @@ def upgrade():
         sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
                   onupdate=sa.text('clock_timestamp()'),
                   nullable=False),
-
     )
 
 
