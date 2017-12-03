@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy_utils import UUIDType, generic_repr, ArrowType
 
 from ingredients_db.database import Base
+from ingredients_db.models.authn import ServiceAccountMixin
 from ingredients_db.models.network_port import NetworkableMixin
 from ingredients_db.models.project import ProjectMixin
 from ingredients_db.models.public_key import PublicKey
@@ -28,7 +29,7 @@ class InstanceState(enum.Enum):
 
 
 @generic_repr
-class Instance(Base, TaskMixin, NetworkableMixin, ProjectMixin, RegionableNixin, ZonableMixin):
+class Instance(Base, TaskMixin, NetworkableMixin, ProjectMixin, RegionableNixin, ZonableMixin, ServiceAccountMixin):
     __tablename__ = 'instances'
 
     id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
@@ -53,6 +54,6 @@ class InstancePublicKey(Base):
     public_key_id = Column(UUIDType, ForeignKey('public_keys.id', ondelete='CASCADE'))
     instance_id = Column(UUIDType, ForeignKey('instances.id', ondelete='CASCADE'))
 
-    created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False)
+    created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False, index=True)
     updated_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'),
                         onupdate=text('clock_timestamp()'), nullable=False)

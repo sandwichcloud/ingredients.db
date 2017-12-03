@@ -26,7 +26,7 @@ def upgrade():
         sa.Column('project_id', sau.UUIDType, sa.ForeignKey('projects.id', ondelete='CASCADE'), nullable=False),
 
         sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
-                  nullable=False),
+                  nullable=False, index=True),
         sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
                   onupdate=sa.text('clock_timestamp()'),
                   nullable=False)
@@ -40,7 +40,7 @@ def upgrade():
         sa.Column('instance_id', sau.UUIDType, sa.ForeignKey('instances.id', ondelete='CASCADE')),
 
         sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
-                  nullable=False),
+                  nullable=False, index=True),
         sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
                   onupdate=sa.text('clock_timestamp()'),
                   nullable=False)

@@ -23,7 +23,7 @@ def upgrade():
         sa.Column('username', sa.String, nullable=False),
         sa.Column('driver', sa.String, nullable=False),
         sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
-                  nullable=False),
+                  nullable=False, index=True),
         sa.Column('updated_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
                   onupdate=sa.text('clock_timestamp()'),
                   nullable=False)
