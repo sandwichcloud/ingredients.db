@@ -26,7 +26,7 @@ def upgrade():
         sa.Column('name', sa.String, nullable=False),
         sa.Column('tags', HSTORE),
         sa.Column('state', sa.Enum(InstanceState), default=InstanceState.BUILDING, nullable=False),
-        sa.Column('network_port_id', sau.UUIDType, sa.ForeignKey('network_ports.id', ondelete='RESTRICT')),
+        sa.Column('network_port_id', sau.UUIDType, sa.ForeignKey('network_ports.id', ondelete='RESTRICT'), index=True),
         sa.Column('region_id', sau.UUIDType, sa.ForeignKey('regions.id', ondelete='RESTRICT'), nullable=False),
         sa.Column('zone_id', sau.UUIDType, sa.ForeignKey('zones.id', ondelete='RESTRICT')),
         sa.Column('service_account_id', sau.UUIDType, sa.ForeignKey('authn_service_accounts.id', ondelete='RESTRICT'),

@@ -12,6 +12,7 @@ class NetworkPort(Base):
     id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
 
     network_id = Column(UUIDType, ForeignKey('networks.id', ondelete='RESTRICT'), nullable=False)
+    project_id = Column(UUIDType, ForeignKey('projects.id', ondelete='CASCADE'), nullable=False, index=True)
     ip_address = Column(IPAddressType)
 
     created_at = Column(ArrowType(timezone=True), server_default=text('clock_timestamp()'), nullable=False, index=True)
@@ -22,4 +23,4 @@ class NetworkPort(Base):
 class NetworkableMixin(object):
     @declared_attr
     def network_port_id(cls):
-        return Column(UUIDType, ForeignKey('network_ports.id', ondelete='RESTRICT'))
+        return Column(UUIDType, ForeignKey('network_ports.id', ondelete='RESTRICT'), index=True)

@@ -71,11 +71,11 @@ class TestMigrations(object):
         prepare_schema_from_migrations(uri_left, alembic_config_left)
 
         from ingredients_db.models.images import Image, ImageMembers
-        from ingredients_db.models.instance import Instance, InstancePublicKey
+        from ingredients_db.models.instance import Instance, InstanceKeypair
         from ingredients_db.models.network import Network
         from ingredients_db.models.network_port import NetworkPort
         from ingredients_db.models.project import Project, ProjectMembers
-        from ingredients_db.models.public_key import PublicKey
+        from ingredients_db.models.keypair import Keypair
         from ingredients_db.models.task import Task
         from ingredients_db.models.authn import AuthNUser, AuthNServiceAccount
         from ingredients_db.models.authz import AuthZPolicy, AuthZRole, AuthZRolePolicy
@@ -87,12 +87,12 @@ class TestMigrations(object):
         Image.mro()
         ImageMembers.mro()
         Instance.mro()
-        InstancePublicKey.mro()
+        InstanceKeypair.mro()
         Network.mro()
         NetworkPort.mro()
         Project.mro()
         ProjectMembers.mro()
-        PublicKey.mro()
+        Keypair.mro()
         Task.mro()
         AuthNUser.mro()
         AuthNServiceAccount.mro()

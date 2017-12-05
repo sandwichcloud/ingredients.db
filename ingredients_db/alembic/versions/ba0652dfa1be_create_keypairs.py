@@ -1,4 +1,4 @@
-"""create public keys
+"""create keypairs
 
 Revision ID: ba0652dfa1be
 Revises: 1fdbfd6b0eea
@@ -18,10 +18,10 @@ depends_on = None
 
 def upgrade():
     op.create_table(
-        'public_keys',
+        'keypairs',
         sa.Column('id', sau.UUIDType, server_default=sa.text("uuid_generate_v4()"), primary_key=True),
         sa.Column('name', sa.String, nullable=False),
-        sa.Column('key', sa.Text, nullable=False),
+        sa.Column('public_key', sa.Text, nullable=False),
 
         sa.Column('project_id', sau.UUIDType, sa.ForeignKey('projects.id', ondelete='CASCADE'), nullable=False),
 
@@ -33,10 +33,10 @@ def upgrade():
     )
 
     op.create_table(
-        'instance_public_keys',
+        'instance_keypairs',
         sa.Column('id', sau.UUIDType, server_default=sa.text("uuid_generate_v4()"), primary_key=True),
 
-        sa.Column('public_key_id', sau.UUIDType, sa.ForeignKey('public_keys.id', ondelete='CASCADE')),
+        sa.Column('keypair_id', sau.UUIDType, sa.ForeignKey('keypairs.id', ondelete='CASCADE')),
         sa.Column('instance_id', sau.UUIDType, sa.ForeignKey('instances.id', ondelete='CASCADE')),
 
         sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),
@@ -48,5 +48,5 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('instance_public_keys')
-    op.drop_table('public_keys')
+    op.drop_table('instance_keypairs')
+    op.drop_table('keypairs')
