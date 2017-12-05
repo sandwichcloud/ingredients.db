@@ -473,6 +473,63 @@ def upgrade():
             {
                 "name": "builtin:users:role:remove",
                 "description": "Ability to remove a user from a role"
+            },
+
+            # Keypairs
+            {
+                "name": "keypairs:create",
+                "description": "Ability to create a keypair",
+                "tags": [
+                    "project_member"
+                ]
+            },
+            {
+                "name": "keypairs:get",
+                "description": "Ability to get a keypair",
+                "tags": [
+                    "project_member",
+                    "service_account"
+                ]
+            },
+            {
+                "name": "keypairs:list",
+                "description": "Ability to list keypairs",
+                "tags": [
+                    "project_member",
+                    "service_account"
+                ]
+            },
+            {
+                "name": "keypairs:delete",
+                "description": "Ability to delete a keypair",
+                "tags": [
+                    "project_member"
+                ]
+            },
+
+            # Network Ports
+            {
+                "name": "network_ports:get",
+                "description": "Ability to get a network port",
+                "tags": [
+                    "project_member",
+                    "service_account"
+                ]
+            },
+            {
+                "name": "network_ports:list",
+                "description": "Ability to list  network ports",
+                "tags": [
+                    "project_member",
+                    "service_account"
+                ]
+            },
+            {
+                "name": "network_ports:delete",
+                "description": "Ability to delete a network port",
+                "tags": [
+                    "project_member"
+                ]
             }
 
         ],

@@ -22,6 +22,8 @@ def upgrade():
         sa.Column('id', sau.UUIDType, server_default=sa.text("uuid_generate_v4()"), primary_key=True),
 
         sa.Column('network_id', sau.UUIDType, sa.ForeignKey('networks.id', ondelete='RESTRICT'), nullable=False),
+        sa.Column('project_id', sau.UUIDType, sa.ForeignKey('projects.id', ondelete='CASCADE'), nullable=False,
+                  index=True),
         sa.Column('ip_address', sau.IPAddressType),
 
         sa.Column('created_at', sau.ArrowType(timezone=True), server_default=sa.text('clock_timestamp()'),

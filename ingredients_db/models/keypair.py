@@ -5,12 +5,12 @@ from ingredients_db.database import Base
 
 
 @generic_repr
-class PublicKey(Base):
-    __tablename__ = 'public_keys'
+class Keypair(Base):
+    __tablename__ = 'keypairs'
 
     id = Column(UUIDType, server_default=text("uuid_generate_v4()"), primary_key=True)
     name = Column(String, nullable=False)
-    key = Column(Text, nullable=False)
+    public_key = Column(Text, nullable=False)
 
     project_id = Column(UUIDType, ForeignKey('projects.id', ondelete='CASCADE'), nullable=False)
 
